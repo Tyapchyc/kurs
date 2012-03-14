@@ -108,8 +108,8 @@
 				  || ($_FILES["file"]["type"] == "image/jpeg")
 				  || ($_FILES["file"]["type"] == "image/pjpeg")
 					|| ($_FILES["file"]["type"] == "image/png"))
-				  && ($_FILES["file"]["size"] < 2000000))
-				{
+				  && ($_FILES["file"]["size"] < 3000000))
+				{																
 					if ($_FILES["file"]["error"] > 0)
 					  {
 					  echo "error upload: " . $_FILES["file"]["error"] . "<br />";
@@ -133,6 +133,7 @@
 						/*move_uploaded_file($_FILES["file"]["tmp_name"],
 						"upload/" . $filename);*/
 						$avatar = "upload/" .date('YmdHis'). $filename;
+						echo $_FILES["file"]["size"];
 						/*
 						$im=imagecreatefromgif($_FILES["file"]["tmp_name"]);
 						$im1=imagecreatetruecolor(150,150);

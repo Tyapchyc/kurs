@@ -70,7 +70,9 @@
 			$res = $db->query($query);*/
 			$query = $db->prepare("INSERT INTO news (nameen,descriptionen,texten,nameuk,descriptionuk,textuk,author,authorid,date) VALUES (?,?,?,?,?,?,?,?,?)");//);
 			$res = $query->execute(array($name,$description,$text,$nameuk,$descriptionuk,$textuk,$author,$authorid,$date));
-			if ($res) {echo 'ok';} else {echo 'error';};
+			$lastid =$db->lastInsertId();
+			if ($res) {echo "ok";$redirect="read.php?id=".$lastid;} else {echo 'error';$redirect="add_news.php";};
+			header("Location: ".$redirect);
 		?>
             
         </div>

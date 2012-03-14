@@ -4,8 +4,8 @@
     $nid=$_POST['nid'];
     $uid=$_SESSION['user_id'];
     $uname=$_SESSION['user_name'];
-    $titlecom=preg_filter("(\<(/?[^\>]+)\>)","",$_POST['namecomment']);
-    $textcom=preg_filter("(\<(/?[^\>]+)\>)","",$_POST['text']);
+    $titlecom=preg_replace("(<[^<]+?>)"," ",$_POST['namecomment']);
+    $textcom=preg_replace("(<[^<]+?>)"," ",$_POST['text']);
     $datecom=$_POST['date'];
     if ($titlecom=='') {
         $string = $textcom;

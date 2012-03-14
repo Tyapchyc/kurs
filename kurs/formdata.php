@@ -116,7 +116,7 @@
 				  || ($_FILES["file"]["type"] == "image/jpeg")
 				  || ($_FILES["file"]["type"] == "image/pjpeg")
 				  || ($_FILES["file"]["type"] == "image/png"))
-				  && ($_FILES["file"]["size"] < 2000000))
+				  && ($_FILES["file"]["size"] < 3000000))
 					{
 					if ($_FILES["file"]["error"] > 0)
 					  {
