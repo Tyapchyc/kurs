@@ -57,6 +57,8 @@
             $texterrror = "";
             if (isset($_POST[login]) and ($_POST[login]!="")) {
                 $login = $_POST[login];
+		if (preg_match( '/[^0-9a-zA-Z]/', $login ))
+		$texterrror="<p>$arrayfd[login_error]</p>";//login error
                 } 
                 else { 
                         $texterrror="<p>$arrayfd[no_login]</p>";//enter login
@@ -141,11 +143,13 @@
 					}
 			if (isset($avatar)){
 				$datenow =date('Y-m-d H:i:s');$rid=3;
-				$res = $db->query("INSERT INTO users (login,password,name,lastname,yearB,monthB,dayB,avatar,email,created,logged,rid) VALUES ('$login','$password','$name','$lastname','$yearB','$monthB','$dayB','$avatar','$email','$datenow','$datenow','$rid')");
+				$query = $db->prepare("INSERT INTO users (login,password,name,lastname,yearB,monthB,dayB,avatar,email,created,logged,rid) VALUES ('$login','$password','$name','$lastname','$yearB','$monthB','$dayB','$avatar','$email','$datenow','$datenow','$rid')");
+				$res = $query->execute();
 			}
 			else {
 				$datenow =date('Y-m-d H:i:s'); $rid=3;
-				$res = $db->query("INSERT INTO users (login,password,name,lastname,yearB,monthB,dayB,email,created,logged,rid) VALUES ('$login','$password','$name','$lastname','$yearB','$monthB','$dayB','$email','$datenow','$datenow','$rid')");
+				$query = $db->prepare("INSERT INTO users (login,password,name,lastname,yearB,monthB,dayB,email,created,logged,rid) VALUES ('$login','$password','$name','$lastname','$yearB','$monthB','$dayB','$email','$datenow','$datenow','$rid')");
+				$res = $query->execute();
 				}
             echo "<p>Ok</p>";
 			$sql = $db->query("SELECT `id`,`name` FROM `users` WHERE `login`='{$login}' LIMIT 1");
