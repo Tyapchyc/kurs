@@ -52,19 +52,23 @@
                   return strtr($str,$tr);
               }
               ?>
-			<?php 
-			
+	<?php
+		
+		$_SESSION[name_reg] = $_POST[name];
+		$_SESSION[yearB_reg] = $_POST[yearB];
+		$_SESSION[monthB_reg] = $_POST[monthB];
+		$_SESSION[dayB_reg] = $_POST[dayB];
             $texterrror = "";
             if (isset($_POST[login]) and ($_POST[login]!="")) {
-                $login = $_POST[login];
-		if (preg_match( '/[^0-9a-zA-Z]/', $login ))
+                $login = $_POST[login];$_SESSION[loging_reg] = $login;
+		if (preg_match( '/[^0-9a-zA-Z_\.\-]/', $login ))
 		$texterrror="<p>$arrayfd[login_error]</p>";//login error
                 } 
                 else { 
                         $texterrror="<p>$arrayfd[no_login]</p>";//enter login
                     }
             if (isset($_POST[email]) and ($_POST[email]!="")) {
-                $email = $_POST[email];
+                $email = $_POST[email];$_SESSION[email_reg] = $email;
                 } 
                 else { 
                         $texterrror="<p>$arrayfd[no_mail]</p>";//enter email
