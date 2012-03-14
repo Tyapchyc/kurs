@@ -60,7 +60,7 @@
 		$_SESSION[dayB_reg] = $_POST[dayB];
             $texterrror = "";
             if (isset($_POST[login]) and ($_POST[login]!="")) {
-                $login = $_POST[login];$_SESSION[loging_reg] = $login;
+                $login = $_POST[login];$_SESSION[login_reg] = $login;
 		if (preg_match( '/[^0-9a-zA-Z_\.\-]/', $login ))
 		$texterrror="<p>$arrayfd[login_error]</p>";//login error
                 } 
@@ -114,7 +114,8 @@
 					else {
 				  if ((($_FILES["file"]["type"] == "image/gif")
 				  || ($_FILES["file"]["type"] == "image/jpeg")
-				  || ($_FILES["file"]["type"] == "image/pjpeg"))
+				  || ($_FILES["file"]["type"] == "image/pjpeg")
+				  || ($_FILES["file"]["type"] == "image/png"))
 				  && ($_FILES["file"]["size"] < 2000000))
 					{
 					if ($_FILES["file"]["error"] > 0)
@@ -161,7 +162,14 @@
             $row = $sql->fetch(PDO::FETCH_ASSOC);	
             if ($row){
 			$_SESSION['user_id'] = $row['id'];
-            $_SESSION['user_name'] = $row['name'];
+		$_SESSION['user_name'] = $row['name'];
+		unset($_SESSION[name_reg]);
+		unset($_SESSION[yearB_reg]);
+		unset($_SESSION[monthB_reg]);
+		unset($_SESSION[dayB_reg]);
+		unset($_SESSION[login_reg]);
+		unset($_SESSION[email_reg]);
+		
 			Header("Location: index.php"); 
             exit;}}}
             ?>

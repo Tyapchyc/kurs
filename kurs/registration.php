@@ -35,7 +35,7 @@ header("Location: index.php");}
         <div id="content"> 
         	<form action="formdata.php" method="post" name="regForm" enctype="multipart/form-data">
             	<div class="label"><label for="login"><?php echo $array['login'];?>:</label></div>
-				<div class="inputdiv"><input class="input" type="text" name="login" id="login" value="<?php if(isset($_SESSION[loging_reg])) echo $_SESSION[loging_reg];?>"/></div>
+				<div class="inputdiv"><input class="input" type="text" name="login" id="login" value="<?php if(isset($_SESSION[login_reg])) echo $_SESSION[loging_reg];?>"/></div>
 				<div class="label"><label for="password"><?php echo $array['password']?>:</label></div>
 				<div class="inputdiv"><input maxlength="32" class="input" type="password" name="password" id="password" /></div>
 				<div class="label"><label for="password2"><?php echo $array['password2']?>:</label></div>
