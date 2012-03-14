@@ -93,7 +93,7 @@
              </head></html>";
             echo "<p>".$arrayup[mail_error]."</p>";exit;}//email error"The entered passwords do not match"
             if ($password!=$password2) {echo $arrayup[pass_error];echo "<html><head>
-                <meta  http-equiv='Refresh' content = '5; URL =profile.php'>
+                <meta  http-equiv='Refresh' content = '2; URL =profile.php'>
              </head></html>";
              exit ;
             }
