@@ -16,6 +16,7 @@
 	$res = $db->query("SELECT * FROM page_title WHERE file='$filename'");
 	$rowtitle = $res->fetch(PDO::FETCH_ASSOC);
 	$title = $rowtitle[$_SESSION['lang']];
+	$arrayup = unserialize($rowtitle['array'.$_SESSION['lang']]);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -71,10 +72,10 @@
                 $email = $_POST[email];
                 } 
                 else { 
-                        $texterrror='<p>enter email</p>';
+                        $texterrror="<p>".$arrayup[no_mail]."</p>";//enter email
                     }
             if (isset($_POST[password])and ($_POST[password]!="")) {$password = $_POST[password];} 
-            else {$texterrror='<p>Please fill out both password fields.</p>'. ' ' .$texterrror;}
+            //else {$texterrror='<p>Please fill out both password fields.</p>'. ' ' .$texterrror;}
             
             if ($texterrror!="") {echo $texterrror;echo "<html><head>
                 <meta  http-equiv='Refresh' content = '5; URL =profile.php'>
@@ -83,25 +84,25 @@
                 }
             $password2 = $_POST[password2];
             $name = $_POST[name];
-	    $lastname = $_POST[lastname];
+						$lastname = $_POST[lastname];
             $yearB = $_POST[yearB];//|([a-z0-9_\.\-]{1,20})@([a-z0-9\.\-]{1,20})\.([a-z]{2,4})|is
             $monthB = $_POST[monthB];
             $dayB = $_POST[dayB];
 	    if (!preg_match('|([a-z0-9_\.\-]{1,20})@([a-z0-9\.\-]{1,20})\.([a-z]{2,4})|', $email)) {echo "<html><head>
                 <meta  http-equiv='Refresh' content = '1; URL =profile.php'>
              </head></html>";
-            echo "<p>email error</p>";exit;}
-            if ($password!=$password2) {echo "The entered passwords do not match";echo "<html><head>
+            echo "<p>".$arrayup[mail_error]."</p>";exit;}//email error"The entered passwords do not match"
+            if ($password!=$password2) {echo $arrayup[pass_error];echo "<html><head>
                 <meta  http-equiv='Refresh' content = '5; URL =profile.php'>
              </head></html>";
              exit ;
             }
-	    $password = crypt($_POST[password]);
+	    
 		$res = $db->query("SELECT * FROM users WHERE email='$email' AND id!='$id'");
 		$myrow = $res->fetch(PDO::FETCH_ASSOC);		
 		if ($myrow) {
 			echo "<html><head><meta http-equiv='Refresh' content = '5; URL =profile.php'></head></html>";
-			echo "<p>$myrow[email]- email already exist $myrow[id]</p>";exit ();}
+			echo "<p>$myrow[email]- $arrayup[mail_exist]</p>";exit ();}//email already exist $myrow[id]
 		else {
 			if ((($_FILES["file"]["type"] == "image/gif")
 				  || ($_FILES["file"]["type"] == "image/jpeg")
@@ -155,14 +156,20 @@
 //					echo $_FILES["file"]["size"];
 					}
 			if (isset($avatar)){
-				$res = $db->query("UPDATE users SET password='$password',name='$name',lastname='$lastname',yearB='$yearB',monthB='$monthB',dayB='$dayB',avatar='$avatar',email='$email' WHERE id='$id'");
+				if ($password) {$password = crypt($_POST[password]);
+					$res = $db->query("UPDATE users SET password='$password',name='$name',lastname='$lastname',yearB='$yearB',monthB='$monthB',dayB='$dayB',avatar='$avatar',email='$email' WHERE id='$id'");}
+				else $res = $db->query("UPDATE users SET name='$name',lastname='$lastname',yearB='$yearB',monthB='$monthB',dayB='$dayB',avatar='$avatar',email='$email' WHERE id='$id'");
 			}
 			else {
-				$res = $db->query("UPDATE users SET password='$password',name='$name',lastname='$lastname',yearB='$yearB',monthB='$monthB',dayB='$dayB',email='$email' WHERE id='$id'");
+				if ($password) {$password = crypt($_POST[password]);
+					$res = $db->query("UPDATE users SET password='$password',name='$name',lastname='$lastname',yearB='$yearB',monthB='$monthB',dayB='$dayB',email='$email' WHERE id='$id'");}
+					else $res = $db->query("UPDATE users SET name='$name',lastname='$lastname',yearB='$yearB',monthB='$monthB',dayB='$dayB',email='$email' WHERE id='$id'");
 				}
 				if ($res) {
 					$_SESSION['user_name'] = $name;
-            echo "<p>ok</p>";}}
+            echo "<p>$arrayup[complete]</p>";echo "<html><head>
+                <meta  http-equiv='Refresh' content = '2; URL =view_profile.php'>
+             </head></html>";}}
             ?>
 		</div>
         <div id="footer"> 
