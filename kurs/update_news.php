@@ -23,16 +23,7 @@ if (isset($_GET[id])) {$id = $_GET[id];}  ?>
 	$rowtitle = $res->fetch(PDO::FETCH_ASSOC);
 	$title = $rowtitle[$_SESSION['lang']];
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><?php echo $title;?></title>
-<link href="css/style.css" rel="stylesheet" type="text/css" />
-<script src="js/jquery-1.5.min.js" type="text/javascript"> </script>
-<script src="js/equalHeight.js" type="text/javascript"> </script>
-</head>
-<body>
+<?php include("head.php")?>
 	<div id="wrapper"> 
 		<div id="header"> 
         	<?php include("blocks/header.php") ?>
@@ -79,19 +70,19 @@ if (isset($_GET[id])) {$id = $_GET[id];}  ?>
         	<form action="update.php" method="post" name="regForm" enctype="multipart/form-data">
 		<div><input value="$id" type="hidden" name="id" id="id" /></div>
             	<div class="labelnews"><label for="namenews">$arrayun[titleen]</label></div>
-                	<div class="inputdivnews"><input value="$name" class="inputnews" type="text" name="namenews" id="namenews" /></div>
+                	<div class="inputdivnews"><input maxlength="60" value="$name" class="inputnews" type="text" name="namenews" id="namenews" /></div>
 		
                 <div class="labelnews"><label for="description">$arrayun[descriptionen]</label></div>
-                	<div ><textarea class="inputnewsarea" name="description" id="description" rows="20" cols="20">$description</textarea></div>
+                	<div ><textarea class="inputnewsarea" maxlength="255" name="description" id="description" rows="20" cols="20">$description</textarea></div>
                 
                 <div class="labelnews"><label for="text">$arrayun[texten]</label></div>
                 	<div ><textarea class="inputtext" name="text" id="text" rows="20" cols="20">$text</textarea></div>
                 
 		<div class="labelnews"><label for="namenewsuk">$arrayun[titleuk]</label></div>
-                	<div class="inputdivnews"><input value="$nameuk" class="inputnews" type="text" name="namenewsuk" id="namenewsuk" /></div>
+                	<div class="inputdivnews"><input maxlength="60" value="$nameuk" class="inputnews" type="text" name="namenewsuk" id="namenewsuk" /></div>
 		
                 <div class="labelnews"><label for="descriptionuk">$arrayun[descriptionuk]</label></div>
-                	<div ><textarea class="inputnewsarea" name="descriptionuk" id="descriptionuk" rows="20" cols="20">$descriptionuk</textarea></div>
+                	<div ><textarea class="inputnewsarea" maxlength="255" name="descriptionuk" id="descriptionuk" rows="20" cols="20">$descriptionuk</textarea></div>
                 
                 <div class="labelnews"><label for="textuk">$arrayun[textuk]</label></div>
                 	<div ><textarea class="inputtext" name="textuk" id="textuk" rows="20" cols="20">$textuk</textarea></div>

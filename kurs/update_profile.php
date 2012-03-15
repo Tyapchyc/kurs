@@ -18,16 +18,7 @@
 	$title = $rowtitle[$_SESSION['lang']];
 	$arrayup = unserialize($rowtitle['array'.$_SESSION['lang']]);
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><?php echo $title;?></title>
-<link href="css/style.css" rel="stylesheet" type="text/css" />
-<script src="js/jquery-1.5.min.js" type="text/javascript"> </script>
-<script src="js/equalHeight.js" type="text/javascript"> </script>
-</head>
-<body>
+<?php include("head.php")?>
 	<div id="wrapper"> 
 		<div id="header"> 
         	<?php include("blocks/header.php") ?>
@@ -77,10 +68,11 @@
             if (isset($_POST[password])and ($_POST[password]!="")) {$password = $_POST[password];} 
             //else {$texterrror='<p>Please fill out both password fields.</p>'. ' ' .$texterrror;}
             
-            if ($texterrror!="") {echo $texterrror;echo "<html><head>
+            if ($texterrror!="") {/*echo $texterrror;echo "<html><head>
                 <meta  http-equiv='Refresh' content = '5; URL =profile.php'>
              </head></html>";
-            exit ();
+            exit ();*/
+						header( "refresh:3;url=profile.php" ); die ($texterrror);
                 }
             $password2 = $_POST[password2];
             $name = $_POST[name];
@@ -88,21 +80,29 @@
             $yearB = $_POST[yearB];//|([a-z0-9_\.\-]{1,20})@([a-z0-9\.\-]{1,20})\.([a-z]{2,4})|is
             $monthB = $_POST[monthB];
             $dayB = $_POST[dayB];
-	    if (!preg_match('|([a-z0-9_\.\-]{1,20})@([a-z0-9\.\-]{1,20})\.([a-z]{2,4})|', $email)) {echo "<html><head>
+	    if (!preg_match('|([a-z0-9_\.\-]{1,20})@([a-z0-9\.\-]{1,20})\.([a-z]{2,4})|', $email)) {/*echo "<html><head>
                 <meta  http-equiv='Refresh' content = '1; URL =profile.php'>
              </head></html>";
-            echo "<p>".$arrayup[mail_error]."</p>";exit;}//email error"The entered passwords do not match"
-            if ($password!=$password2) {echo $arrayup[pass_error];echo "<html><head>
+            echo "<p>".$arrayup[mail_error]."</p>";exit;*/
+						header( "refresh:3;url=profile.php" );
+						die($arrayup[mail_error]);
+						}//email error"The entered passwords do not match"
+            if ($password!=$password2) {/*echo $arrayup[pass_error];echo "<html><head>
                 <meta  http-equiv='Refresh' content = '2; URL =profile.php'>
              </head></html>";
-             exit ;
+             exit ;*/
+						 header( "refresh:3;url=profile.php" );
+						 die ($arrayup[pass_error]);
             }
 	    
 		$res = $db->query("SELECT * FROM users WHERE email='$email' AND id!='$id'");
 		$myrow = $res->fetch(PDO::FETCH_ASSOC);		
 		if ($myrow) {
-			echo "<html><head><meta http-equiv='Refresh' content = '5; URL =profile.php'></head></html>";
-			echo "<p>$myrow[email]- $arrayup[mail_exist]</p>";exit ();}//email already exist $myrow[id]
+			/*echo "<html><head><meta http-equiv='Refresh' content = '5; URL =profile.php'></head></html>";
+			echo "<p>$myrow[email]- $arrayup[mail_exist]</p>";exit ();*/
+			header( "refresh:3;url=profile.php" );
+			die("<p>$myrow[email]- $arrayup[mail_exist]</p>");
+			}//email already exist $myrow[id]
 		else {
 			if ((($_FILES["file"]["type"] == "image/gif")
 				  || ($_FILES["file"]["type"] == "image/jpeg")
@@ -133,7 +133,7 @@
 						/*move_uploaded_file($_FILES["file"]["tmp_name"],
 						"upload/" . $filename);*/
 						$avatar = "upload/" .date('YmdHis'). $filename;
-						echo $_FILES["file"]["size"];
+						//echo $_FILES["file"]["size"];
 						/*
 						$im=imagecreatefromgif($_FILES["file"]["tmp_name"]);
 						$im1=imagecreatetruecolor(150,150);
@@ -169,9 +169,12 @@
 				}
 				if ($res) {
 					$_SESSION['user_name'] = $name;
-            echo "<p>$arrayup[complete]</p>";echo "<html><head>
+            /*echo "<p>$arrayup[complete]</p>";echo "<html><head>
                 <meta  http-equiv='Refresh' content = '2; URL =view_profile.php'>
-             </head></html>";}}
+             </head></html>";*/
+						 header( "refresh:2;url=view_profile.php" );
+						 die($arrayup[complete]);
+						 }}
             ?>
 		</div>
         <div id="footer"> 

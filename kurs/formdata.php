@@ -11,16 +11,7 @@
 	$title = $rowtitle[$_SESSION['lang']];
 	$arrayfd = unserialize($rowtitle['array'.$_SESSION['lang']]);
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><?php echo $title;?></title>
-<link href="css/style.css" rel="stylesheet" type="text/css" />
-<script src="js/jquery-1.5.min.js" type="text/javascript"> </script>
-<script src="js/equalHeight.js" type="text/javascript"> </script>
-</head>
-<body>
+<?php include("head.php")?>
 	<div id="wrapper"> 
 		<div id="header"> 
         	<?php include("blocks/header.php") ?>
@@ -76,10 +67,10 @@
             if (isset($_POST[password])and ($_POST[password]!="")) {$password = $_POST[password];} 
             else {$texterrror="<p>$arrayfd[no_pass]</p>". " " .$texterrror;}//enter password
             
-            if ($texterrror!="") {echo $texterrror;echo "<html><head>
+            if ($texterrror!="") {header( "refresh:2;url=registration.php" );die ( $texterrror); /*echo "<html><head>
                 <meta  http-equiv='Refresh' content = '2; URL =registration.php'>
-             </head></html>";
-            exit ;
+             </head></html>";*/
+            //exit ;
                 }
             $password2 = $_POST[password2];
             $name = $_POST[name];
@@ -87,30 +78,30 @@
             $yearB = $_POST[yearB];
             $monthB = $_POST[monthB];
             $dayB = $_POST[dayB];//"The entered passwords do not match"
-            if ($password!=$password2) {echo $arrayfd[pass_error];echo "<html><head>
+            if ($password!=$password2) {header( "refresh:2;url=registration.php" );die( $arrayfd[pass_error]);/*echo "<html><head>
                 <meta  http-equiv='Refresh' content = '2; URL =registration.php'>
              </head></html>";
-             exit ;
+             exit ;*/
             }
-	    if (!preg_match('|([a-z0-9_\.\-]{1,20})@([a-z0-9\.\-]{1,20})\.([a-z]{2,4})|is', $email)) {echo "<html><head>
+	    if (!preg_match('|([a-z0-9_\.\-]{1,20})@([a-z0-9\.\-]{1,20})\.([a-z]{2,4})|is', $email)) {header( "refresh:2;url=registration.php" );/*echo "<html><head>
                 <meta  http-equiv='Refresh' content = '2; URL =registration.php'>
-             </head></html>";
-            echo "<p>$arrayfd[mail_error]</p>";exit;}//email error
+             </head></html>";*/
+            die( "<p>$arrayfd[mail_error]</p>");/*exit;*/}//email error
 	    $password = crypt($_POST[password]);
 			$res = $db->query("SELECT * FROM users WHERE login='$login'");
 			$myrow = $res->fetch(PDO::FETCH_ASSOC);		
 			
-            if ($myrow) {
-                echo "<html><head>
+            if ($myrow) {header( "refresh:2;url=registration.php" );
+                /*echo "<html><head>
                 <meta  http-equiv='Refresh' content = '2; URL =registration.php'>
-             </head></html>";
-            echo "<p>$myrow[login]-$arrayfd[login_exist]</p>";}//login already exist
+             </head></html>";*/
+            die( "<p>$myrow[login]-$arrayfd[login_exist]</p>");}//login already exist
             else { 
 					$res = $db->query("SELECT * FROM users WHERE email='$email'");
 					$myrow = $res->fetch(PDO::FETCH_ASSOC);		
-					if ($myrow) {
-						echo "<html><head><meta http-equiv='Refresh' content = '2; URL =registration.php'></head></html>";
-					echo "<p>$myrow[email]- $arrayfd[mail_exist]</p>";}//email already exist
+					if ($myrow) {header( "refresh:2;url=registration.php" );
+						//echo "<html><head><meta http-equiv='Refresh' content = '2; URL =registration.php'></head></html>";
+					/*echo "*/die("<p>$myrow[email]- $arrayfd[mail_exist]</p>");}//email already exist
 					else {
 				  if ((($_FILES["file"]["type"] == "image/gif")
 				  || ($_FILES["file"]["type"] == "image/jpeg")

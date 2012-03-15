@@ -23,16 +23,7 @@
 	$title = $rowtitle[$_SESSION['lang']];
 	$array = unserialize($rowtitle['array'.$_SESSION['lang']]);
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><?php echo $title;?></title>
-<link href="css/style.css" rel="stylesheet" type="text/css" />
-<script src="js/jquery-1.5.min.js" type="text/javascript"> </script>
-<script src="js/equalHeight.js" type="text/javascript"> </script>
-</head>
-<body>
+<?php include("head.php")?>
 	<div id="wrapper"> 
 		<div id="header"> 
         	<?php include("blocks/header.php") ?>
@@ -46,19 +37,19 @@
         <div id="content"> 
         	<form action="add.php" method="post" name="regForm" enctype="multipart/form-data">
             	<div class="labelnews"><label for="namenews"><?php echo $array['titleen'];?></label></div>
-                <div class="inputdivnews"><input class="inputnews" type="text" name="namenews" id="namenews" /></div>
+                <div class="inputdivnews"><input maxlength="60" class="inputnews" type="text" name="namenews" id="namenews" /></div>
                 
                <div class="labelnews"><label for="description"><?php echo $array['descriptionen'];?></label></div>
-                <div ><textarea class="inputnewsarea" name="description" id="description" rows="20" cols="20" ></textarea></div>
+                <div ><textarea class="inputnewsarea" maxlength="255" name="description" id="description" rows="20" cols="20" ></textarea></div>
                 
                 <div class="labelnews"><label for="text"><?php echo $array['texten'];?></label></div>
                 <div ><textarea class="inputtext" name="text" id="text" rows="20" cols="20" ></textarea></div>
                 
 		<div class="labelnews"><label for="namenewsuk"><?php echo $array['titleuk'];?></label></div>
-                <div class="inputdivnews"><input class="inputnews" type="text" name="namenewsuk" id="namenewsuk" /></div>
+                <div class="inputdivnews"><input class="inputnews" maxlength="60" type="text" name="namenewsuk" id="namenewsuk" /></div>
                  
                 <div class="labelnews"><label for="descriptionuk"><?php echo $array['descriptionuk'];?></label></div>
-                <div ><textarea class="inputnewsarea" name="descriptionuk" id="descriptionuk" rows="20" cols="20" ></textarea></div>
+                <div ><textarea class="inputnewsarea" maxlength="255" name="descriptionuk" id="descriptionuk" rows="20" cols="20" ></textarea></div>
                 
                 <div class="labelnews"><label for="textuk"><?php echo $array['textuk'];?></label></div>
                 <div ><textarea class="inputtext" name="textuk" id="textuk" rows="20" cols="20"></textarea></div>
