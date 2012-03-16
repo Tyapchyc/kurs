@@ -6,16 +6,16 @@
 <?php
 	if (isset($_SESSION['user_id']))
 	{
-		
 		if ($rowadm) {}
-		else {
+		else
+		{
 			Header("Location: index.php");
 		}
 	}
 	else
 	{
-		Header("Location: index.php"); 
-   		die('denied');
+		Header("Location: index.php");
+		die('denied');
 	}
 ?>
 <?php
@@ -45,7 +45,7 @@
 				if (isset($_GET['by'])) {$by=$_GET['by'];}
 //				echo "$by";
 				if (!isset($by)){
-				$by=0;
+					$by=0;
 				}
 				if (isset($_GET['b'])) {$b=$_GET['b'];} else {$b=12;}
 				if ($by<0) {$by=0;}
@@ -65,6 +65,5 @@
 			<?php include("blocks/footer.php") ?>
 		</div>
 	</div>
-
 </body>
 </html>

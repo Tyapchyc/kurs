@@ -3,12 +3,16 @@
 	include("db.php");
 	include("blocks/permission.php")
 ?>
-<?php if (isset($_SESSION['user_id'])) { 
-					}
-		else {
-			Header("Location: index.php"); 
-   			 die('denied');
-			}
+<?php
+	if (isset($_SESSION['user_id']))
+	{
+		
+	}
+	else
+	{
+		Header("Location: index.php");
+		die('denied');
+	}
 ?>
 <?php
 	if (!isset($_SESSION['lang'])) {$_SESSION['lang']='en';}
@@ -146,6 +150,10 @@
 						$image->load($_FILES["file"]["tmp_name"]);
 						$image->resize(150, 150);
 						$image->save($avatar);
+						$resavatar = $db->query("SELECT avatar FROM users WHERE id=$id");
+            $myrowavatar = $resavatar->fetch(PDO::FETCH_ASSOC);
+						$oldavatar = $myrowavatar['avatar'];
+						if ($oldavatar) unlink($oldavatar);
 						
 						//}
 					  }
