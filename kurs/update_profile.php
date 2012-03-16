@@ -159,13 +159,17 @@
 					}
 			if (isset($avatar)){
 				if ($password) {$password = crypt($_POST[password]);
-					$res = $db->query("UPDATE users SET password='$password',name='$name',lastname='$lastname',yearB='$yearB',monthB='$monthB',dayB='$dayB',avatar='$avatar',email='$email' WHERE id='$id'");}
-				else $res = $db->query("UPDATE users SET name='$name',lastname='$lastname',yearB='$yearB',monthB='$monthB',dayB='$dayB',avatar='$avatar',email='$email' WHERE id='$id'");
+					$query = $db->prepare("UPDATE users SET password='$password',name='$name',lastname='$lastname',yearB='$yearB',monthB='$monthB',dayB='$dayB',avatar='$avatar',email='$email' WHERE id='$id'");
+					$res = $query->execute();}
+				else {$query = $db->prepare("UPDATE users SET name='$name',lastname='$lastname',yearB='$yearB',monthB='$monthB',dayB='$dayB',avatar='$avatar',email='$email' WHERE id='$id'");
+					$res = $query->execute();}
 			}
 			else {
 				if ($password) {$password = crypt($_POST[password]);
-					$res = $db->query("UPDATE users SET password='$password',name='$name',lastname='$lastname',yearB='$yearB',monthB='$monthB',dayB='$dayB',email='$email' WHERE id='$id'");}
-					else $res = $db->query("UPDATE users SET name='$name',lastname='$lastname',yearB='$yearB',monthB='$monthB',dayB='$dayB',email='$email' WHERE id='$id'");
+					$query = $db->prepare("UPDATE users SET password='$password',name='$name',lastname='$lastname',yearB='$yearB',monthB='$monthB',dayB='$dayB',email='$email' WHERE id='$id'");
+					$res = $query->execute();}
+				else {$query = $db->prepare("UPDATE users SET name='$name',lastname='$lastname',yearB='$yearB',monthB='$monthB',dayB='$dayB',email='$email' WHERE id='$id'");
+					$res = $query->execute();}
 				}
 				if ($res) {
 					$_SESSION['user_name'] = $name;

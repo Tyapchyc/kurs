@@ -7,6 +7,7 @@
     $titlecom=preg_replace("(<[^<]+?>)"," ",$_POST['namecomment']);
     $textcom=preg_replace("(<[^<]+?>)"," ",$_POST['text']);
     $datecom=$_POST['date'];
+    if ((empty($titlecom) && (empty($textcom)))) {header("Location:".$_SERVER['HTTP_REFERER']); exit;}
     if ($titlecom=='') {
         $string = $textcom;
         $result = iconv("utf-8", "windows-1251", $string);

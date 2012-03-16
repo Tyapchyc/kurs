@@ -41,9 +41,9 @@
             
 		$query = $db->prepare("INSERT INTO rating (nid,uid,rating) VALUES (?,?,?)");
 		$res = $query->execute(array($nid,$_SESSION[user_id],$rating));
-			if ($res) {echo "<a href='read.php?id=".$nid."'>".$arrayar['thank']."</a>";} else {echo 'error';};
-		?>
-            
+		if ($res) {echo "<a href='read.php?id=".$nid."'>".$arrayar['thank']."</a>";} else {echo 'error';};
+		header("refresh:2;url=read.php?id=$nid");		
+	?>	
         </div>
         <div id="footer"> 
         	<?php include("blocks/footer.php") ?>

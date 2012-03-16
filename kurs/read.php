@@ -5,16 +5,18 @@
 ?>
 <?php
 	if (isset($_GET['id'])) {$id=$_GET['id'];}
-	else{
+	else
+	{
 		if (isset($_POST['nid'])) {$id=$_POST['nid']; $rid=$_POST['rid'];
 			$res = $db->query("DELETE FROM rating WHERE id = '$rid'");
-				 
 		}	
 	}
-	
-	if ($_SESSION['lang']=='en') {
-		$querynews="SELECT nameen,texten,author,date,authorid FROM news WHERE id=$id";}
-	else {
+	if ($_SESSION['lang']=='en')
+	{
+		$querynews="SELECT nameen,texten,author,date,authorid FROM news WHERE id=$id";
+	}
+	else
+	{
 		$querynews="SELECT nameuk,textuk,author,date,authorid FROM news WHERE id=$id";
 	}
 	$res = $db->query($querynews);
@@ -23,22 +25,65 @@
 	$rest = $db->query("SELECT * FROM page_title WHERE file='$filename'");
 	$rowread = $rest->fetch(PDO::FETCH_ASSOC);
 	$arrayread = unserialize($rowread['array'.$_SESSION['lang']]);
-	
-	$queryrating="SELECT * FROM rating WHERE nid=$id";
+	$metod_rating = 3; //1 - один запрос в бд и последующий перебор с подсчетами; 2 - три запроса с подсчетом значений в самом запросе; 3-два запроса с подсчетом значений в запросе;
+	if ($metod_rating == 1)
+	{
+		$queryrating="SELECT * FROM rating WHERE nid=$id";
+		$resrating = $db->query($queryrating);
+		$ratingnow = 0; $ratinguser = false;
+		while ($myrowrating = $resrating->fetch(PDO::FETCH_ASSOC))
+		{
+			$ratingnow=$ratingnow+$myrowrating['rating'];
+			$countrating++;
+			if ($myrowrating['uid']==$_SESSION['user_id']) {$ratinguser=$myrowrating['rating'];$ratinguserid=$myrowrating['id'];}
+		}
+		if ($countrating){
+			$ratingnow=round($ratingnow/$countrating,1);
+			$strrating="".$arrayread['rating'].":".$ratingnow." ".$arrayread['count_rating'].":".$countrating;
+		}
+		else {
+			$strrating="".$arrayread['norated'];
+		}
+	}
+	elseif ($metod_rating == 2) {
+		$querycount = "SELECT COUNT(1) FROM rating WHERE nid=$id";
+		$rescount = $db->query($querycount);
+		$myrowcount = $rescount->fetch(PDO::FETCH_NUM);
+		if (($myrowcount) AND ($myrowcount[0]!=0))
+		{
+			$count = $myrowcount[0];
+			$queryavg = "SELECT AVG(rating) FROM rating WHERE nid=$id";
+			$resavg = $db->query($queryavg);
+			$myrowavg = $resavg->fetch(PDO::FETCH_NUM);
+			if ($myrowavg) $avg = round($myrowavg[0],1);
+			$strrating="".$arrayread['rating'].":".$avg." ".$arrayread['count_rating'].":".$count;
+			$queryuser = "SELECT rating,id  FROM rating WHERE (nid=$id AND uid=$_SESSION[user_id])";
+			$resuser = $db->query($queryuser);
+			$myrowuser = $resuser->fetch(PDO::FETCH_NUM);
+			if ($myrowuser) {$ratinguser = $myrowuser[0];$ratinguserid = $myrowuser[1];}
+		}
+		else $strrating="".$arrayread['norated'];
+	}
+	elseif ($metod_rating == 3) {
+		$querycountavg = "SELECT COUNT(1), AVG(rating) FROM rating WHERE nid=$id";// ,IF ( rating.uid = $_SESSION[user_id] , 'ok' , rating.uid )
+		$rescountavg = $db->query($querycountavg);
+		$myrowcountavg = $rescountavg->fetch(PDO::FETCH_NUM);
+		if (($myrowcountavg) AND ($myrowcountavg[0]!=0))
+		{ 
+			$count = $myrowcountavg[0];
+			$avg = round($myrowcountavg[1],1);
+			$strrating="".$arrayread['rating'].":".$avg." ".$arrayread['count_rating'].":".$count;
+			$queryuser = "SELECT rating,id  FROM rating WHERE (nid=$id AND uid=$_SESSION[user_id])";
+			$resuser = $db->query($queryuser);
+			$myrowuser = $resuser->fetch(PDO::FETCH_NUM);
+			if ($myrowuser) {$ratinguser = $myrowuser[0];$ratinguserid = $myrowuser[1];}
+		}
+		else $strrating="".$arrayread['norated'];	
+	}	
+	/*$queryrating="SELECT AVG(rating) FROM rating WHERE nid=$id";
 	$resrating = $db->query($queryrating);
-	$ratingnow=0;$ratinguser=false;
-	while ($myrowrating = $resrating->fetch(PDO::FETCH_ASSOC)) {
-		$ratingnow=$ratingnow+$myrowrating['rating'];
-		$countrating++;
-		if ($myrowrating['uid']==$_SESSION['user_id']) {$ratinguser=$myrowrating['rating'];$ratinguserid=$myrowrating['id'];}
-	}
-	if ($countrating){
-		$ratingnow=round($ratingnow/$countrating,1);
-		$strrating="".$arrayread['rating'].":".$ratingnow." ".$arrayread['count_rating'].":".$countrating;
-	}
-	else {
-		$strrating="".$arrayread['norated'];
-	}
+	$myrowrating = $resrating->fetch(PDO::FETCH_NUM);*/
+	//$strrating="".$strrating." ".$arrayread['rating'].":".$myrowrating['ratingsum']." ".$arrayread['count_rating'].":".$myrowrating['ratingcount'];
 /*	$res = $db->query("SELECT rid FROM users WHERE id=$_SESSION[user_id]");
 	$row = $res->fetch(PDO::FETCH_ASSOC);
 	$rid = $row['rid'];
@@ -53,6 +98,7 @@
 	$permission = 'remove news';
 	$res = $db->query("SELECT * FROM roles_permission WHERE (rid='$rid' AND permission='$permission')");
 	$rowremove= $res->fetch(PDO::FETCH_ASSOC);*/
+	$title = $myrow['name'.$_SESSION['lang']];
 ?>
 <?php include("head.php")?>
 	<div id="wrapper"> 
