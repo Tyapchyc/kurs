@@ -1,6 +1,6 @@
 <?php session_start();  ?>
 <?php
-	if (isset($_SESSION['user_id']))
+	if ((isset($_SESSION['user_id'])) and (isset($_GET['id'])))
 	{
 		
 	}
@@ -37,7 +37,7 @@
 				$res = $db->query("SELECT  authorid FROM news WHERE id='$id'");
 				$myrow = $res->fetch(PDO::FETCH_ASSOC);
 				$authorid = $myrow[authorid];
-				if ($authorid!=$_SESSION[user_id]){echo 'Isnt your news';}
+				if (($authorid!=$_SESSION[user_id]) and (!$rowadm)){echo 'Isnt your news';}
 				else
 				{
 					$res = $db->query("DELETE FROM news WHERE id = '$id'");

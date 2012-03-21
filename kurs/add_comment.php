@@ -6,7 +6,7 @@
     $uname=$_SESSION['user_name'];
     $titlecom=preg_replace("(<[^<]+?>)"," ",$_POST['namecomment']);
     $textcom=preg_replace("(<[^<]+?>)"," ",$_POST['text']);
-    $datecom=$_POST['date'];
+    $datecom=date('Y-m-d H:i:s');//$_POST['date'];
     if ((empty($titlecom) && (empty($textcom)))) {header("Location:".$_SERVER['HTTP_REFERER']); exit;}
     if ($titlecom=='')
 		{
@@ -21,5 +21,6 @@
 		$res = $query->execute(array($nid,$uid,$uname,$titlecom,$textcom,$datecom));
     //echo $nid,$uid,$uname,$titlecom,$textcom,$datecom;
 		if ($res) {echo 'ok';} else {echo 'error';};
-		header("Location:".$_SERVER['HTTP_REFERER']);
+		header("Location: read.php?id=".$nid);
+		//header("Location:".$_SERVER['HTTP_REFERER']);
 ?>

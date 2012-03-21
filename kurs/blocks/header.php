@@ -1,10 +1,10 @@
 <div class="item-list">
 	<ul>
-		<li class="first">
-			<a class="en" href="en">Англійська</a>
+		<li >
+			<a class="en" href="en"><?php if ($_SESSION['lang']=='uk') echo "English"; else echo "Англійська"; ?></a>
 		</li>
 		<li class="first">
-			<a class="ua" href="uk">Українська</a>
+			<a class="ua" href="uk"><?php if ($_SESSION['lang']=='uk') echo "Ukranian"; else echo "Українська"; ?></a>
 		</li>
 	</ul>
 </div>

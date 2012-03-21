@@ -35,8 +35,8 @@ header("Location: index.php");}
 				<div class="inputdiv"><input class="input" type="text" name="email" id="email" value="<?php if(isset($_SESSION[email_reg])) echo $_SESSION[email_reg];?>" /></div>
 				<div class="label"><label for="name"><?php echo $array['name']?>:</label></div>
 				<div class="inputdiv"><input  class="input" type="text" name="name" id="name" value="<?php if(isset($_SESSION[name_reg])) echo $_SESSION[name_reg];?>"/></div>
-				<div class="label"><label for="file"><?php echo $array['avatar']?>:</label></div>
-				<div class="inputdiv"><input type="file"  title="jpeg,gif" name="file" id="file" /></div>
+				<!--<div class="label"><label for="file"><?php echo $array['avatar']?>:</label></div>
+				<div class="inputdiv"><input type="file"  title="jpeg,gif" name="file" id="file" /></div>-->
 				<div class="label"><label><?php echo $array['birthday']?>:</label></div>
 				<div class="inputdiv"><?php include("blocks/birthday.php") ?></div>
 				<div class="inputdiv"><input class="input" type="submit" name="submit" value="<?php echo $array['button']?>" /> </div>

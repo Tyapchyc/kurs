@@ -5,12 +5,11 @@
 ?>
 <?php
 	if (isset($_GET['id'])) {$id=$_GET['id'];}
-	else
-	{
-		if (isset($_POST['nid'])) {$id=$_POST['nid']; $rid=$_POST['rid'];
+	elseif (isset($_POST['nid'])) {$id=$_POST['nid']; $rid=$_POST['rid'];
 			$res = $db->query("DELETE FROM rating WHERE id = '$rid'");
-		}	
-	}
+	}	
+	else{Header("Location: index.php");
+		die('denied');}
 	if ($_SESSION['lang']=='en')
 	{
 		$querynews="SELECT nameen,texten,author,date,authorid FROM news WHERE id=$id";
@@ -100,7 +99,19 @@
 	$rowremove= $res->fetch(PDO::FETCH_ASSOC);*/
 	$title = $myrow['name'.$_SESSION['lang']];
 ?>
+
 <?php include("head.php")?>
+<script type="text/javascript">
+	function delnews(nid) {
+		if (confirm('<?php echo $arrayread['question'];?>')) {
+			window.location = 'delete.php?id='+nid
+			return true
+		}
+		else {
+			return false	
+		}
+	}
+</script>
 	<div id="wrapper"> 
 		<div id="header"> 
 			<?php include("blocks/header.php") ?>
@@ -113,7 +124,7 @@
     </div>
     <div id="content">
       <?php
-				printf( "<div class='news'><p><a href='read.php?id=%s'>%s</a></p><div>%s</div><p>%s</p><p>Author:%s</p><p> Date news:%s </p></div>",$id,$myrow['name'.$_SESSION['lang']],$strrating,$myrow['text'.$_SESSION['lang']],$myrow[author],$myrow[date]);
+				printf( "<div class='news'><p><a href='read.php?id=%s'>%s</a></p><div>%s</div><p>%s</p><p>%s:%s</p><p> %s:%s </p></div>",$id,$myrow['name'.$_SESSION['lang']],$strrating,$myrow['text'.$_SESSION['lang']],$arrayread[author],$myrow[author],$arrayread[date_news],$myrow[date]);
 				if (isset($_SESSION['user_id'])) {
 					if (($rowadm) or ($rowrating)){
 						if (($ratinguser) ) {
@@ -142,7 +153,10 @@ HERE;
 						}
 					}
 					if (($rowadm) or (($rowremove) and ($myrow[authorid]==$_SESSION[user_id]))) {
-						echo "<div><a href='delete.php?id=$id'>".$arrayread['remove']."</a>  ";
+						echo "<div>";
+						//echo "<button onclick='delnews($id)'>$arrayread[remove]</button>";
+						echo "<a href='delete.php?id=$id' onclick='delnews($id);return false'>".$arrayread['remove']."</a>  ";
+						//<a href='delete.php?id=$id'>".$arrayread['remove']."</a>  ";
 					}
 					if (($rowadm) or (($rowedit) and ($myrow[authorid]==$_SESSION[user_id]))) {
 						echo "<a href='update_news.php?id=$id'>".$arrayread['edit']."</a></div>";
