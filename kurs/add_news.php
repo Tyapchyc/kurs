@@ -1,5 +1,8 @@
 <?php session_start();  ?>
 <?php
+header("Cache-Control: public");
+header("Expires: " . date("r", time() + 3600)); ?> 
+<?php
 	if (isset($_SESSION['user_id']))
 	{
 		
